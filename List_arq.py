@@ -7,7 +7,9 @@ lista_dados = []
 caminho = '/home/hitallo/valcann/backupsFrom'
 lista_arquivos = os.listdir(caminho)
 caminho_backup = '/home/hitallo/valcann/backupsTo'
-caminho_log_arq = '/home/hitallo/valcann/teste.log'
+caminho_log_backup = '/home/hitallo/valcann/'
+caminho_log_To = '/home/hitallo/valcann/'
+
 
 
 for arquivo in lista_arquivos:
@@ -20,7 +22,8 @@ for arquivo in lista_arquivos:
     # lista completa
     lista_dados.append((data, arquivo, data_criacao, tamanho))
 
-logging.basicConfig(filename='arquivos.log', level=logging.DEBUG)
+logging.basicConfig(filename=f'{caminho_log_backup}/backupsFrom.log' , level=logging.DEBUG)
+logging.basicConfig(filename=f'{caminho_log_To}/backupsTo.log', level=logging.DEBUG)
 lista_dados.sort(reverse=True)
 
 logging.debug("verificando datas")
@@ -32,14 +35,17 @@ for arquivo in lista_dados:
     tempo_exclusao = now - timedelta(3)
 
     if tempo_exclusao >= date_time:
+        # deletando arquivos com mais de 3 dias
         os.remove(f'{caminho}/{arquivo[1]}')
         print(f'Deletado o arquivo:{arquivo[1]}.')
+        # logs de acoes
         logging.debug(f'Hoje: {now}, data dos arquivos: {date_time}')
-        print('deletar')
         logging.debug("Deletando arquivos")
 
+
     elif tempo_exclusao <= date_time:
+        # copiando arquivos para o caminho
         shutil.copy2(f'{caminho}/{arquivo[1]}',caminho_backup)
-        print('backup')
-        logging.debug(f'salvando arquivos {arquivo[1]} em {caminho_backup}')
+        # log de acoes
+        logging.warning(f'salvando arquivos {arquivo[1]} em {caminho_backup}')
 
