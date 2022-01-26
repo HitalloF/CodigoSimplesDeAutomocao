@@ -24,6 +24,8 @@ for arquivo in lista_arquivos:
 
 logging.basicConfig(filename=f'{caminho_log_backup}/backupsFrom.log' , level=logging.DEBUG)
 logging.basicConfig(filename=f'{caminho_log_To}/backupsTo.log', level=logging.DEBUG)
+
+# listando data por ordem  decrescente
 lista_dados.sort(reverse=True)
 
 logging.debug("verificando datas")
